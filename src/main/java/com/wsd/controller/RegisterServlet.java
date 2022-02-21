@@ -43,29 +43,34 @@ public class RegisterServlet extends HttpServlet {
 
         User byUsername = userService.selectByUsername(user.getUsername());
 
-        String checkCode = request.getParameter("checkCode");
-        HttpSession session = request.getSession();
-        String code = (String) session.getAttribute("code");
-
-        session.removeAttribute("code");
-
-        if (!checkCode.equalsIgnoreCase(code)) {
-            request.setAttribute("msg", "验证码不正确!");
-            return;
-        }
-
-        System.out.println("checkCode = " + checkCode);
-        if(checkCode.length()==0){
-            out.print("<script>");
-            out.print("alert('验证码不能为空!');");
-            out.print("location.href='register.jsp'");
-            out.print("</script>");
-        }
 
         if (byUsername != null) {
             request.setAttribute("msg", "用户名已经存在");
             request.getRequestDispatcher("register.jsp").forward(request, response);
         } else {
+
+            String checkCode = request.getParameter("checkCode");
+            HttpSession session = request.getSession();
+            String code = (String) session.getAttribute("code");
+
+            session.removeAttribute("code");
+
+            System.out.println("checkCode = " + checkCode);
+            if(checkCode.length()==0){
+                System.out.println("验证码不能为空" );
+                out.print("<script>");
+                out.print("alert('验证码不能为空!');");
+                out.print("location.href='register.jsp'");
+                out.print("</script>");
+            }
+
+
+            if (!checkCode.equalsIgnoreCase(code)) {
+                request.setAttribute("msg", "验证码不正确!");
+                return;
+            }
+
+
 
             userService.registerUser(user);
             out.print("<script>");
