@@ -1,5 +1,6 @@
 package com.wsd.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.wsd.pojo.Brand;
 import com.wsd.service.BrandService;
 import org.apache.commons.beanutils.BeanUtils;
@@ -9,7 +10,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
@@ -28,19 +31,29 @@ public class AddServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        request.setCharacterEncoding("utf-8");
 
-        Map<String, String[]> parameterMap = request.getParameterMap();
+//        Map<String, String[]> parameterMap = request.getParameterMap();
+//
+//        Brand brand = new Brand();
+//
+//        try {
+//            BeanUtils.populate(brand,parameterMap);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        //1.获取字符缓冲流
+        BufferedReader reader = request.getReader();
 
-        Brand brand = new Brand();
+        String json = reader.readLine();
 
-        try {
-            BeanUtils.populate(brand,parameterMap);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Brand brand = JSON.parseObject(json, Brand.class);
 
         brandService.addBrand(brand);
 
-        response.sendRedirect("index.jsp");
+        response.setContentType("text/plain;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        out.print("success");
+
+//        response.sendRedirect("index.jsp");
 
     }
 

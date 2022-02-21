@@ -22,14 +22,37 @@
 
 <script>
     // 1.给按钮绑定单击事件
+    document.getElementById("btn").onclick = function () {
+        // 2.创建JavaScript对象保存要提交的数据
+        let brand = {
+            brandName:"",
+            companyName:"",
+            ordered:0,
+            description:"",
+            status:0
+        };
+        // 3.获取表单数据
+        brand.brandName = document.getElementById("brandName").value;
+        brand.companyName = document.getElementById("companyName").value;
+        brand.ordered = document.getElementById("ordered").value;
+        brand.description = document.getElementById("description").value;
+        //3.1要通过name属性获取
+        let statusArray = document.getElementsByName("status");
+        for (let s of statusArray) {
+            if(s.checked){
+                brand.status = s.value;
+            }
+        }
 
-	// 2.创建JavaScript对象保存要提交的数据
-
-
-	// 3.获取表单数据
-  
-
-	// 4.发送Ajax请求
+        // 4.发送Ajax请求
+        axios.post("addServlet", brand).then(resp => {
+            let result = resp.data;
+            if(result == "success"){
+                alert("添加成功");
+                location.href = "brand.html";
+            }
+        });
+    }
 
 </script>
 
