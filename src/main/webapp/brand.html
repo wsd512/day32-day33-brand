@@ -9,6 +9,7 @@
 <a href="addBrand.html"><input type="button" value="新增"></a><br>
 <hr>
 <table id="brandTable" border="1" cellspacing="0" width="100%">
+    <thead>
     <tr>
         <th>序号</th>
         <th>品牌名称</th>
@@ -18,38 +19,36 @@
         <th>状态</th>
         <th>操作</th>
     </tr>
+    </thead>
+    <tbody id="brandBody"></tbody>
 
-    <tr align="center">
-        <td>1</td>
-        <td>三只松鼠</td>
-        <td>三只松鼠</td>
-        <td>100</td>
-        <td>三只松鼠，好吃不上火</td>
-        <td>启用</td>
-        <td><a href="#">修改</a> <a href="#">删除</a></td>
-    </tr>
+    <script type="text/javascript">
 
-    <tr align="center">
-        <td>2</td>
-        <td>优衣库</td>
-        <td>优衣库</td>
-        <td>10</td>
-        <td>优衣库，服适人生</td>
-        <td>禁用</td>
+        window.onload = function () {
+            selectAll();
+        }
 
-        <td><a href="#">修改</a> <a href="#">删除</a></td>
-    </tr>
+        function selectAll() {
 
-    <tr align="center">
-        <td>3</td>
-        <td>小米</td>
-        <td>小米科技有限公司</td>
-        <td>1000</td>
-        <td>为发烧而生</td>
-        <td>启用</td>
 
-        <td><a href="#">修改</a> <a href="#">删除</a></td>
-    </tr>
+            axios.get("selectAllServlet").then(resp => {
+            	let brands = resp.data;
+                let html = "";
+                for (let brand of brands) {
+                    html += `<tr align="center">
+                                <td>${brand.id}</td>
+                                <td>${brand.brandName}</td>
+                                <td>${brand.companyName}</td>
+                                <td>${brand.ordered}</td>
+                                <td>${brand.description}</td>
+                                <td>${brand.status==1?"启用":"禁用"}</td>
+                                <td><a href="#">修改</a> <a href="#">删除</a></td>
+                            </tr>`;
+                }
+                document.getElementById("brandBody").innerHTML = html;
+            });
+        }
+    </script>
 </table>
 
 <script>

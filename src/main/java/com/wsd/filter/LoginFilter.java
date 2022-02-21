@@ -16,7 +16,7 @@ import java.io.PrintWriter;
  * @author: wansidong
  * @create: 2022-02-19 11:22
  */
-@WebFilter("/*")
+//@WebFilter("/*")
 public class LoginFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
