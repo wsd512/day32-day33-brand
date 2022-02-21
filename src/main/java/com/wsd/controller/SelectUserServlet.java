@@ -29,7 +29,8 @@ public class SelectUserServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         String username = request.getParameter("username");
-        if(userService.selectUserByUsername(username)){
+        User user = userService.selectByUsername(username);
+        if(user!=null){
             out.print("用户名已经存在!");
         }else{
             out.print("可以注册!");

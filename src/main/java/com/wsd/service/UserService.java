@@ -24,11 +24,6 @@ public class UserService {
         return user;
     }
 
-    public boolean selectUserByUsername(String username){
-        User user = userMapper.selectByUsername(username);
-        return user!=null;
-    }
-
     public void registerUser(User user){
         userMapper.registerUser(user);
     }
