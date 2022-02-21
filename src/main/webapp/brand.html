@@ -24,9 +24,13 @@
 
     <script type="text/javascript">
 
+
+
         window.onload = function () {
             selectAll();
         }
+
+
 
         function selectAll() {
 
@@ -42,11 +46,27 @@
                                 <td>${brand.ordered}</td>
                                 <td>${brand.description}</td>
                                 <td>${brand.status==1?"启用":"禁用"}</td>
-                                <td><a href="#">修改</a> <a href="#">删除</a></td>
+                                <td><a href="#">修改</a> <a href="javascript:deleteOne('${brand.id}','${brand.brandName}');">删除</a></td>
                             </tr>`;
+
+                    //console.log(brand.id);
+
                 }
+
                 document.getElementById("brandBody").innerHTML = html;
             });
+        }
+
+        function deleteOne(id,brandName){
+            if(confirm("真的要删除Name"+brandName+"这一行吗?")){
+                axios.post("deleteServlet",id).then(resp => {
+                    let result = resp.data;
+                    if(result == "success"){
+                        alert("删除成功");
+                        location.href="brand.html";
+                    }
+                });
+            }
         }
     </script>
 </table>

@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -25,19 +26,21 @@ public class DeleteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 //        request.setCharacterEncoding("utf-8");
-        String id = request.getParameter("id");
-
-        brandService.delete(Integer.parseInt(id));
+//        String id = request.getParameter("id");
+        BufferedReader reader = request.getReader();
+        String json = reader.readLine();
+        brandService.delete(Integer.parseInt(json));
 
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
+        out.print("success");
 
 //        out.write("<script>");
 //        out.write("alert('删除成功!');");
 //        out.write("location.href='index.jsp';");
 //        out.write("</script>");
 
-        request.getRequestDispatcher("index.jsp").forward(request,response);
+      //  request.getRequestDispatcher("index.jsp").forward(request,response);
 
     }
 
