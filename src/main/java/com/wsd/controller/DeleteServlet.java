@@ -27,9 +27,10 @@ public class DeleteServlet extends HttpServlet {
 
 //        request.setCharacterEncoding("utf-8");
 //        String id = request.getParameter("id");
+
         BufferedReader reader = request.getReader();
-        String json = reader.readLine();
-        brandService.delete(Integer.parseInt(json));
+        String jsonID = reader.readLine();
+        brandService.delete(Integer.parseInt(jsonID));
 
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();

@@ -58,7 +58,7 @@
         }
 
         function deleteOne(id,brandName){
-            if(confirm("真的要删除Name"+brandName+"这一行吗?")){
+            if(confirm("真的要删除"+brandName+"这一行吗?")){
                 axios.post("deleteServlet",id).then(resp => {
                     let result = resp.data;
                     if(result == "success"){
