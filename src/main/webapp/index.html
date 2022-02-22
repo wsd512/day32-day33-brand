@@ -104,7 +104,6 @@
                     type="index" :index="calcIndex"
                     width="50">
             </el-table-column>
-
             <el-table-column
                     prop="brandName"
                     label="品牌名称"
@@ -141,7 +140,7 @@
                     label="操作">
                 <el-row>
                     <el-button type="primary">修改</el-button>
-                    <el-button type="danger">删除</el-button>
+                    <el-button type="danger" @click="deleteBrand">删除</el-button>
                 </el-row>
             </el-table-column>
 
@@ -167,6 +166,8 @@
 <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
 
 <script>
+    //import th from "./element-ui/src/locale/lang/th";
+
     new Vue({
         el: "#app",
         methods: {
@@ -181,8 +182,18 @@
             // 批量删除
             deleteByIds() {
             },
+            //删除某条数据
+            deleteBrand(){
+                axios.post("deleteServlet",).then(resp => {
+                	let result = resp.data;
+                	if(result == "success"){
+                	    this.selectAll();
+                    }
+                });
+            },
             //显示对话框
             showDialog() {
+                this.dialogVisible = true;
             },
             // 复选框选中后执行的方法
             handleSelectionChange(val) {
@@ -199,9 +210,20 @@
             },
             // 添加数据
             addBrand() {
+                axios.post("addServlet", this.brand).then(resp => {
+                	let result = resp.data;
+                	if(result == "success"){
+                        this.selectAll();
+                        this.dialogVisible = false;
+                        this.brand = {};
+                    }
+                });
             },
             //查询所有品牌
             selectAll() {
+                axios.get("selectAllServlet").then(resp => {
+                	this.tableData = resp.data;
+                });
             }
         },
         //当页面加载完成后，发送异步请求，获取数据
@@ -234,27 +256,7 @@
                 // 选中要删除的id数组
                 selectedIds: [],
                 // 表格数据
-                tableData: [{
-                    brandName: '华为',
-                    companyName: '华为科技有限公司',
-                    ordered: '100',
-                    status: "1"
-                }, {
-                    brandName: '华为',
-                    companyName: '华为科技有限公司',
-                    ordered: '100',
-                    status: "1"
-                }, {
-                    brandName: '华为',
-                    companyName: '华为科技有限公司',
-                    ordered: '100',
-                    status: "1"
-                }, {
-                    brandName: '华为',
-                    companyName: '华为科技有限公司',
-                    ordered: '100',
-                    status: "1"
-                }]
+                tableData: []
             }
         }
     })
