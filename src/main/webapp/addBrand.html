@@ -5,25 +5,51 @@
     <meta charset="UTF-8">
     <title>添加品牌</title>
     <script src="js/axios-0.18.0.js"></script>
+    <script src="js/vue.js"></script>
 </head>
 <body>
 <h3>添加品牌</h3>
+<div id="app">
 <form action="" method="post">
-    品牌名称：<input id="brandName" name="brandName"><br>
-    企业名称：<input id="companyName" name="companyName"><br>
-    排序：<input id="ordered" name="ordered"><br>
-    描述信息：<textarea rows="5" cols="20" id="description" name="description"></textarea><br>
+    品牌名称：<input id="brandName" name="brandName" v-model="brand.brandName"><br>
+    企业名称：<input id="companyName" name="companyName" v-model="brand.companyName"><br>
+    排序：<input id="ordered" name="ordered" v-model="brand.ordered"><br>
+    描述信息：<textarea rows="5" cols="20" id="description" name="description" v-model="brand.description"></textarea><br>
     状态：
-    <input type="radio" name="status" value="0">禁用
-    <input type="radio" name="status" value="1">启用<br>
+    <input type="radio" name="status" value="0" v-model="brand.status">禁用
+    <input type="radio" name="status" value="1" v-model="brand.status">启用<br>
 
-    <input id="btn" type="button" value="提交">
+    <input id="btn" type="button" value="提交" @click="addBrand">
 </form>
-
+</div>
 <script>
+
+    new Vue(
+        {
+            el:"#app",
+            data:{
+                brand:{}
+            },
+            methods:{
+                addBrand(){
+                    axios.post("addServlet", this.brand).then(resp => {
+                        let result = resp.data;
+                        if(result == "success"){
+                            alert("添加成功");
+                            location.href = "brand.html";
+                        }
+                    });
+                }
+            }
+        }
+    );
+
     // 1.给按钮绑定单击事件
     document.getElementById("btn").onclick = function () {
-        // 2.创建JavaScript对象保存要提交的数据
+
+
+
+        /*// 2.创建JavaScript对象保存要提交的数据
         let brand = {
             brandName:"",
             companyName:"",
@@ -51,7 +77,7 @@
                 alert("添加成功");
                 location.href = "brand.html";
             }
-        });
+        });*/
     }
 
 </script>
