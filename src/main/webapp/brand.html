@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title>所有品牌</title>
     <script src="js/axios-0.18.0.js"></script>
+    <script src="js/vue.js"></script>
 </head>
 <body>
+<div id="app">
 <a href="addBrand.html"><input type="button" value="新增"></a><br>
 <hr>
 <table id="brandTable" border="1" cellspacing="0" width="100%">
@@ -20,26 +22,56 @@
         <th>操作</th>
     </tr>
     </thead>
-    <tbody id="brandBody"></tbody>
+    <tbody id="brandBody">
+        <tr v-for="(brand,index) in brandList">
+            <td>{{index+1}}</td>
+            <td>{{brand.brandName}}</td>
+            <td>{{brand.companyName}}</td>
+            <td>{{brand.ordered}}</td>
+            <td>{{brand.description}}</td>
+            <td>{{brand.status==1?"启用":"禁用"}}</td>
+            <td><a href="#">修改</a>
+                <a href="javascript:deleteOne('${brand.id}','${brand.brandName}');">删除</a></td>
+        </tr>
+    </tbody>
 
-    <script type="text/javascript">
 
-
-
-        window.onload = function () {
-            selectAll();
+</table>
+</div>
+<script type="text/javascript">
+    new Vue({
+        el:"#app",
+        data:{
+            brandList:[]
+        },
+        mounted(){
+            axios({
+                method:"get",
+                url:"selectAllServlet"
+            }).then(resp=>{
+                this.brandList = resp.data;
+            });
         }
+    });
+</script>
+<!--<script type="text/javascript">
 
 
 
-        function selectAll() {
+    window.onload = function () {
+        selectAll();
+    }
 
 
-            axios.get("selectAllServlet").then(resp => {
-            	let brands = resp.data;
-                let html = "";
-                for (let brand of brands) {
-                    html += `<tr align="center">
+
+    function selectAll() {
+
+
+        axios.get("selectAllServlet").then(resp => {
+            let brands = resp.data;
+            let html = "";
+            for (let brand of brands) {
+                html += `<tr align="center">
                                 <td>${brand.id}</td>
                                 <td>${brand.brandName}</td>
                                 <td>${brand.companyName}</td>
@@ -49,30 +81,25 @@
                                 <td><a href="#">修改</a> <a href="javascript:deleteOne('${brand.id}','${brand.brandName}');">删除</a></td>
                             </tr>`;
 
-                    //console.log(brand.id);
+                //console.log(brand.id);
 
+            }
+
+            document.getElementById("brandBody").innerHTML = html;
+        });
+    }
+
+    function deleteOne(id,brandName){
+        if(confirm("真的要删除"+brandName+"这一行吗?")){
+            axios.post("deleteServlet",id).then(resp => {
+                let result = resp.data;
+                if(result == "success"){
+                    alert("删除成功");
+                    location.href="brand.html";
                 }
-
-                document.getElementById("brandBody").innerHTML = html;
             });
         }
-
-        function deleteOne(id,brandName){
-            if(confirm("真的要删除"+brandName+"这一行吗?")){
-                axios.post("deleteServlet",id).then(resp => {
-                    let result = resp.data;
-                    if(result == "success"){
-                        alert("删除成功");
-                        location.href="brand.html";
-                    }
-                });
-            }
-        }
-    </script>
-</table>
-
-<script>
-    
-</script>
+    }
+</script>-->
 </body>
 </html>
